@@ -3,7 +3,7 @@
   <groupId>ru.msk.tkachenko.dmitry.web</groupId>
   <artifactId>webnote</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <packaging>ejb</packaging>
+  <packaging>war</packaging>
   <build>
     <!-- <sourceDirectory>src</sourceDirectory> -->
     <plugins>
