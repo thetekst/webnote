@@ -10,6 +10,7 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -17,7 +18,9 @@ import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
+import ru.msk.tkachenko.dmitry.web.webnote.error.UserNotFoundException;
 import ru.msk.tkachenko.dmitry.web.webnote.model.User;
 
 @Repository
@@ -26,6 +29,7 @@ public class UserDaoImpl implements UserDao { // extends JdbcDaoSupport
 	private JdbcTemplate jdbcTemplate;
 	
 	private final String findAllQuery = "SELECT * FROM profile";
+	private final String findById = "SELECT * FROM profile WHERE id=?";
 
 	public List<User> getAllUsers() {
 		
@@ -50,16 +54,6 @@ public class UserDaoImpl implements UserDao { // extends JdbcDaoSupport
         return users;
     }
 	
-//	@Autowired
-//	public void setJdbcTemplate(JdbcTemplate jdbcTemplate){
-//        this.jdbcTemplate = jdbcTemplate;
-//    }
-	
-//	@Autowired
-//	public UserDaoImpl(DataSource dataSource) {
-//        jdbcTemplate = new JdbcTemplate(dataSource);
-//    }
-	
 	@Override
 	public long totalCount() {
 		final String sql = "SELECT count(*) FROM profile"; // webnote_db.profile
@@ -68,13 +62,6 @@ public class UserDaoImpl implements UserDao { // extends JdbcDaoSupport
 //		System.out.println(count);
 		return count;
 	}
-	
-//	private JdbcOperations jdbc;
-//	
-//	@Autowired
-//	public JdbcUserRepository(JdbcOperations jdbc) {
-//		this.jdbc = jdbc;
-//	}
 	
 	@Override
 	public User save(User user) {
@@ -136,6 +123,16 @@ public class UserDaoImpl implements UserDao { // extends JdbcDaoSupport
 					rs.getString("email"),
 					rs.getBoolean("remember_me")
 			);
+		}
+		
+	}
+
+	@Override
+	public User find(@PathVariable Long id) {
+		try {
+			return jdbcTemplate.queryForObject(findById, new UserRowMapper(), id);
+		} catch (EmptyResultDataAccessException e) {
+			throw new UserNotFoundException(id);
 		}
 		
 	}

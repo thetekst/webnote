@@ -10,5 +10,8 @@ public interface UserDao {
 	long totalCount();
 	
 	User save(User user);
+	
+	User find(Long id);
+	
 	List<User> findAll();
 }
