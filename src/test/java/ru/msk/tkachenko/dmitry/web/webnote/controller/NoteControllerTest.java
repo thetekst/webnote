@@ -18,7 +18,6 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 
 import ru.msk.tkachenko.dmitry.web.webnote.config.DispatcherServlet;
-import ru.msk.tkachenko.dmitry.web.webnote.config.RootConfig;
 import ru.msk.tkachenko.dmitry.web.webnote.config.WebMvcConfigurer;
 import ru.msk.tkachenko.dmitry.web.webnote.data.UserDao;
 import ru.msk.tkachenko.dmitry.web.webnote.data.UserDaoImpl;
