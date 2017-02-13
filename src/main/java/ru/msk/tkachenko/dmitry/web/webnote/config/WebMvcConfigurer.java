@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.context.annotation.PropertySources;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -18,10 +17,7 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
-import ru.msk.tkachenko.dmitry.web.webnote.data.UserDao;
-import ru.msk.tkachenko.dmitry.web.webnote.data.UserDaoImpl;
 import ru.msk.tkachenko.dmitry.web.webnote.model.Animal;
-import ru.msk.tkachenko.dmitry.web.webnote.model.User;
 
 @Configuration
 @ComponentScan(basePackages = "ru.msk.tkachenko.dmitry.web.webnote")
@@ -31,11 +27,6 @@ public class WebMvcConfigurer extends WebMvcConfigurerAdapter {
 	
 	@Autowired
 	private Environment env;
-	
-	public WebMvcConfigurer(Environment env) {
-		this.env = env;
-		System.out.println("00000000000000 " + env.getProperty("${jdbc.drivers}"));
-	}
 
 	@Bean(name = "viewResolver")
     public ViewResolver viewResolver() {
@@ -60,10 +51,10 @@ public class WebMvcConfigurer extends WebMvcConfigurerAdapter {
     @Bean
     public DataSource getDataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName("org.mariadb.jdbc.Driver");
-        dataSource.setUrl("jdbc:mysql://localhost:3306/webnote_db");
-        dataSource.setUsername("root");
-        dataSource.setPassword("good35");
+        dataSource.setDriverClassName(env.getProperty("jdbc.drivers"));
+        dataSource.setUrl(env.getProperty("jdbc.url"));
+        dataSource.setUsername(env.getProperty("jdbc.username"));
+        dataSource.setPassword(env.getProperty("jdbc.password"));
          
         return dataSource;
     }
