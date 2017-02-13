@@ -32,6 +32,11 @@ public class WebMvcConfigurer extends WebMvcConfigurerAdapter {
 	@Autowired
 	private Environment env;
 	
+	public WebMvcConfigurer(Environment env) {
+		this.env = env;
+		System.out.println("00000000000000 " + env.getProperty("${jdbc.drivers}"));
+	}
+
 	@Bean(name = "viewResolver")
     public ViewResolver viewResolver() {
         InternalResourceViewResolver resolver = new InternalResourceViewResolver();
@@ -52,28 +57,21 @@ public class WebMvcConfigurer extends WebMvcConfigurerAdapter {
     	registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
     }
     
-//    @Bean //(name = "dataSource")
-//    public DataSource getDataSource() {
-//        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-//        dataSource.setDriverClassName("org.mariadb.jdbc.Driver");
-//        dataSource.setUrl("jdbc:mysql://localhost:3306/webnote_db");
-//        dataSource.setUsername("root");
-//        dataSource.setPassword("good35");
-//        
-////        dataSource.setDriverClassName(env.getProperty("${jdbc.drivers}"));
-////        dataSource.setUrl(env.getProperty("${jdbc.url}"));
-////        dataSource.setUsername(env.getProperty("${jdbc.username}"));
-////        dataSource.setPassword(env.getProperty("${jdbc.password}"));
-//         
-//        return dataSource;
-//    }
+    @Bean
+    public DataSource getDataSource() {
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        dataSource.setDriverClassName("org.mariadb.jdbc.Driver");
+        dataSource.setUrl("jdbc:mysql://localhost:3306/webnote_db");
+        dataSource.setUsername("root");
+        dataSource.setPassword("good35");
+         
+        return dataSource;
+    }
     
-//    @Bean
-//    public JdbcTemplate jdbcTemplate() {
-//        JdbcTemplate jdbcTemplate = new JdbcTemplate();
-//        jdbcTemplate.setDataSource(getDataSource());
-//        return jdbcTemplate;
-//    }
+    @Bean
+    public JdbcTemplate getJdbcTemplate() {
+        return new JdbcTemplate(getDataSource());
+    }
      
 //    @Bean
 //    public UserDao getUserDao() { // UserDao

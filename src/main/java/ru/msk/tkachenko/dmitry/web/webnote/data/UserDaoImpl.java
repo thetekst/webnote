@@ -23,14 +23,10 @@ import ru.msk.tkachenko.dmitry.web.webnote.model.User;
 
 @Repository
 public class UserDaoImpl implements UserDao { // extends JdbcDaoSupport
-
+	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	
 	private final String findAllQuery = "SELECT * FROM profile";
-
-	public UserDaoImpl(DataSourceConfig dataSource) {
-		jdbcTemplate = new JdbcTemplate(dataSource.getDataSource());
-	}
 
 	public List<User> getAllUsers() {
 		

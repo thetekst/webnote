@@ -14,6 +14,7 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 
 import ru.msk.tkachenko.dmitry.web.webnote.config.DispatcherServlet;
@@ -26,8 +27,12 @@ import ru.msk.tkachenko.dmitry.web.webnote.model.User;
 //@ContextConfiguration(classes=DispatcherServlet.class)
 
 @RunWith(SpringJUnit4ClassRunner.class)
-//@ContextConfiguration(loader=AnnotationConfigContextLoader.class)
+@ContextConfiguration(classes = WebMvcConfigurer.class)
 public class NoteControllerTest {
+	
+	@Autowired
+	private WebApplicationContext wac;
+	
 //	@Autowired
 //	private JdbcTemplate jdbcTemplate;
 	
